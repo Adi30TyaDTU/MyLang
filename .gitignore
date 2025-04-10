@@ -3,4 +3,6 @@
 *.exe
 *.class
 *.log
+*.swp
+*.swo
 build/
