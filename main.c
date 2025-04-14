@@ -3,7 +3,9 @@
 #include <ctype.h>
 #include <string.h>
 #include "lexerf.h"
- 
+#include "parserf.h" 
+
+
 int main(int argc, char *argv[]){
     if(argc<2){
         printf("Error: correct syntax: %s <filename.unn> <output_filename>\n", argv[0]);
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]){
     for(size_t i=0;tokens[i].type!=END_OF_TOKENS;i++){
         print_token(tokens[i]);
     }
-       
+    parser(tokens);  
     return 0;
 	
 }
