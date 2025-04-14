@@ -63,8 +63,7 @@ Token *parser(Token *tokens){
     root->left=left;
     root->right=right;
     print_tree(root);
-    while(current_token->type!=END_OF_TOKENS){
-       // printf("123\n"); 
+    while(current_token->type!=END_OF_TOKENS){ 
         current_token++;
     }
     return current_token;
