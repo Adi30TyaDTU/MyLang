@@ -28,7 +28,7 @@ Node *init_node(Node *node, char *value, NodeTypes type){
     node=malloc(sizeof(Node));
     node->value=malloc(sizeof(char)*2);
     node->value=value;
-    node->type=type;
+    node->type=(int)type;
     node->left=NULL;
     node->right=NULL;
     return node;
@@ -38,7 +38,9 @@ void print_tree(Node *node){
     if(node==NULL){
         return;
     }
-    for(size_t i=0;node->value[i]!='\0';i++){
+    for(size_t i=0
+            
+            ;node->value[i]!='\0';i++){
         printf("%c",node->value[i]);
     }
     printf("\n");
@@ -50,21 +52,66 @@ void print_tree(Node *node){
 Token *parser(Token *tokens){
     Token *current_token=&tokens[0];
     Node *root=malloc(sizeof(Node));
-       
     Node *left=malloc(sizeof(Node));
-    Node *right=malloc(sizeof(Node));  
-  
-    root=init_node(root,"EXIT",STATEMENT);
-    left=init_node(left,"1",INT_LIT);
-    right=init_node(root,";",EXTRAS);
-
-
+    Node *right=malloc(sizeof(Node));
+    root=init_node(root,"PROGRAM",BEGINNING);
    
-    root->left=left;
-    root->right=right;
+   
     print_tree(root);
+
+    Node *current=root;
+
     while(current_token->type!=END_OF_TOKENS){ 
+        if(current==NULL){
+            break;
+        }
+        
+        if(current==root){
+            //;
+        }
+
+        if(current_token->type==KEYWORD && strcmp(current_token->value,"exit")){
+            Node *exit_node=malloc(sizeof(Node));
+            exit_node=init_node(exit_node,current_token->value,STATEMENT);
+            root->right=exit_node;
+            current=root->right;
+            current_token++;
+            if(current_token->type!=SEPARATOR){
+                printf("ERROR\n");
+                exit(1);
+            }  
+            Node *open_paren_node=malloc(sizeof(Node));
+            open_paren_node=init_node(open_paren_node,current_token->value,EXTRAS);
+            current->left=open_paren_node;
+            
+            
+            current_token++;
+
+
+            Node *expr_node=malloc(sizeof(Node));
+            expr_node=init_node(expr_node,current_token->value,INT_LIT);
+            current->left->left=expr_node;
+
+            
+            current_token++;
+
+
+            Node *close_paren_node=malloc(sizeof(Node));
+            close_paren_node=init_node(close_paren_node,current_token->value,EXTRAS);
+            current->left->right=close_paren_node;
+            
+            current_token++;
+
+            Node *semi_node=malloc(sizeof(Node));
+            semi_node=init_node(semi_node,current_token->value,EXTRAS);
+            current->right=semi_node;
+
+            printf("EXIT\n");
+            break;
+        }
+        
         current_token++;
     }
+    print_tree(root);
     return current_token;
 }
