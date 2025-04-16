@@ -2,6 +2,7 @@
 #define LEXER_H_
 typedef enum{
     INT,
+    BEGINNING,
     KEYWORD,
     SEPARATOR,
     END_OF_TOKENS,

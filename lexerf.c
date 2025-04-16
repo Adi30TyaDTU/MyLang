@@ -5,6 +5,7 @@
 
 typedef enum{
     INT,
+    BEGINNING,
     KEYWORD,
     SEPARATOR,
     END_OF_TOKENS,
@@ -38,6 +39,9 @@ void print_token(Token token){
             break;
         case END_OF_TOKENS:
             printf(" END OF TOKENS\n");
+            break;
+        case BEGINNING:
+            printf("BEGINNING\n");
             break;
 
     }

@@ -6,18 +6,10 @@
 #include "lexerf.h"
 
 
-typedef enum{
-    INT_LIT,
-    STATEMENT,
-    EXTRAS,
-    BEGINNING,
-}NodeTypes;
-
-
 typedef struct  Node{
 
     char *value;
-    NodeTypes type;
+    TokenTypes type;
     struct Node *left;
     struct Node *right;
 }Node;
@@ -34,18 +26,21 @@ Node *init_node(Node *node, char *value, NodeTypes type){
     return node;
 }
 
-void print_tree(Node *node){
-    if(node==NULL){
-        return;
-    }
-    for(size_t i=0
-            
-            ;node->value[i]!='\0';i++){
-        printf("%c",node->value[i]);
-    }
-    printf("\n");
-    print_tree(node->left);
-    print_tree(node->right);
+
+void print_tree(Node *node, int indent, char *identifier){
+  if(node == NULL){
+    return;
+  }
+  for(int i = 0; i < indent; i++){
+    printf(" ");
+  }
+  printf("%s -> ", identifier);
+  for(size_t i = 0; node->value[i] != '\0'; i++){
+    printf("%c", node->value[i]);
+  }
+  printf("\n");
+  print_tree(node->left, indent + 1, "left");
+  print_tree(node->right, indent + 1, "right");
 }
 
 
@@ -57,7 +52,7 @@ Token *parser(Token *tokens){
     root=init_node(root,"PROGRAM",BEGINNING);
    
    
-    print_tree(root);
+    
 
     Node *current=root;
 
@@ -112,6 +107,6 @@ Token *parser(Token *tokens){
         
         current_token++;
     }
-    print_tree(root);
+    print_tree(root,0,"root");
     return current_token;
 }
